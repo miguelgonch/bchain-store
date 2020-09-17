@@ -6,15 +6,16 @@ contract RequestProduct {
     int _productId;
     
 
-    constructor(int productId) public {
+    constructor(address buyer, int productId, int expiracion) public {
         // Realizar la consulta para verificar la disponiblidad del producto (Para mientras es un > 0, luego hay que hacer consulta a la db y ver si existe el producto)
         require(productId > 0,"Producto no es valido");
+
         _productId = productId;
     }
 
     function purchase(int quantity) public {
         // maxItems = consultar en db maximo dispobible
-        maxItems = 5;
-        require(0<quantity<maxItems),"No es una cantidad valida, revisar unidades disponibles y pedido minimo";
+        int maxItems = 5;
+        require(0 < quantity && quantity < maxItems,"No es una cantidad valida, revisar unidades disponibles y pedido minimo");
     }
 }

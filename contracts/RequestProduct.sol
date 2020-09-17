@@ -1,24 +1,24 @@
 pragma solidity ^0.5.10;
 
 contract RequestProduct {
-    int _productPrice;
-    int _productId;
-    address _buyer = msg.sender;
-    address public _seller;
+    uint256 _productPrice;
+    int256 _productId;
+    //address payable _buyer = msg.sender;
+    address payable _seller;
     bool _paymentCompleted = false;
 
     //event Pago(address buyer, address seller, int productId, int quantity);
 
     constructor(
-        address seller,
-        int productId,
-        int expiration,
-        int quantity
+        address payable seller,
+        int256 productId,
+        int256 expiration,
+        int256 quantity
     ) public {
         _seller = seller;
-        
+
         // maxItems = consultar en db maximo dispobible
-        int maxItems = 5;
+        int256 maxItems = 5;
         // Realizar la consulta para verificar la disponiblidad del producto (Para mientras es un > 0, luego hay que hacer consulta a la db y ver si existe el producto)
         require(productId > 0, "Producto no es valido");
         require(
@@ -35,8 +35,10 @@ contract RequestProduct {
     function sellerAccept() public {}
 
     // Ok del buyer
-    function buyerReserve()  external payable {
-        require(int(msg.value) == _productPrice,'Not enough ether');
+    function buyerReserve() external payable {
+        //require(msg.value >= _productPrice, "Not enough ether for purchase");
         //_buyer.transfer(_productPrice);
+        //require(msg.value == _productPrice,'Not enough ether');
+        //_seller.transfer(80);
     }
 }

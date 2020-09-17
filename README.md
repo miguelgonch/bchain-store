@@ -25,4 +25,11 @@ Disponible en: https://github.com/universidad-del-istmo/Blockchains-2020/tree/ma
 4. Se concluye el contrato y todos reciben su pago
 
 
+### Comandos para prueba
+* En truffle:
+     testing = await RequestProduct.deployed();
+     testing.buyerReserve({from: "0x3E0A39C5e8B68afb43D14b7a43A9e82Ae37cb54f", value: "35000000000000000000"})
+     web3.eth.getBalance("0x3E0A39C5e8B68afb43D14b7a43A9e82Ae37cb54f")
+     web3.eth.getBalance("0xf6bef30ccbf4628dd99fc1f87ea50d80740819b0")
+
 

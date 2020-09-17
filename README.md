@@ -13,7 +13,7 @@ Disponible en: https://github.com/universidad-del-istmo/Blockchains-2020/tree/ma
 
 1. El comprador publica un "mensaje de compra"
   1. Fondos reservados para la compra
-  2. Fonods reservados para el fee de la plataforma
+  2. Fondos reservados para el fee de la plataforma
   3. Fecha de expiracion
     * Definida por el comprador
     * Definida por el servicio

@@ -6,7 +6,7 @@ contract RequestProduct {
     int _productId;
     
 
-    constructor(address buyer, int productId, int expiracion) public {
+    constructor(address buyer, int productId, int expiration) public {
         // Realizar la consulta para verificar la disponiblidad del producto (Para mientras es un > 0, luego hay que hacer consulta a la db y ver si existe el producto)
         require(productId > 0,"Producto no es valido");
 

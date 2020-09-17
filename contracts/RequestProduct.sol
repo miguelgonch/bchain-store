@@ -13,9 +13,9 @@ contract RequestProduct {
         int expiration,
         int quantity
     ) public {
-        // Realizar la consulta para verificar la disponiblidad del producto (Para mientras es un > 0, luego hay que hacer consulta a la db y ver si existe el producto)
+        // maxItems = consultar en db maximo dispobible
         int maxItems = 5;
-
+        // Realizar la consulta para verificar la disponiblidad del producto (Para mientras es un > 0, luego hay que hacer consulta a la db y ver si existe el producto)
         require(productId > 0, "Producto no es valido");
         require(
             0 < quantity && quantity < maxItems,
@@ -23,17 +23,13 @@ contract RequestProduct {
         );
 
         _productId = productId;
-        // Consultar el precio del producto
+        // Consultar el precio del producto en la db
         _productPrice = 5;
     }
 
     // funcion de aceptar request por parte del seller
-    function sellerAccept() public {
-
-    }
+    function sellerAccept() public {}
 
     // Ok del buyer
-    function buyerReserve() public {
-        // maxItems = consultar en db maximo dispobible
-    }
+    function buyerReserve() public {}
 }

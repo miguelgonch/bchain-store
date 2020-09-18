@@ -32,8 +32,10 @@ contract RequestProduct {
     }
 
     // funcion de aceptar request por parte del seller
-    function sellerAccept(address payable recipient) external payable {
-        recipient.transfer(10 ether);
+    function sellerAccept() external payable {
+        //recipient.transfer(10 ether);
+        require(msg.sender==_seller, "To accept you must be the seller");
+        _seller.transfer(10 ether);
     }
 
     // Ok del buyer

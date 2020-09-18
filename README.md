@@ -38,7 +38,7 @@ web3.eth.getBalance("Contract Address")
 ```
 * Aceptar Contrato: Vendedor acepta el pago
 ```
-testing.sellerAccept("Seller Account Address")
+testing.sellerAccept()
 ```
 
 

@@ -32,7 +32,9 @@ contract RequestProduct {
     }
 
     // funcion de aceptar request por parte del seller
-    function sellerAccept() public {}
+    function sellerAccept(address payable recipient) external payable {
+        recipient.transfer(cantidad);
+    }
 
     // Ok del buyer
     function buyerReserve() external payable {
@@ -41,4 +43,5 @@ contract RequestProduct {
         //require(msg.value == _productPrice,'Not enough ether');
         //_seller.transfer(80);
     }
+
 }

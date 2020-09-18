@@ -36,4 +36,9 @@ testing.buyerReserve({from: "Buyer Account Address", value: "3500000000000000000
 web3.eth.getBalance("Buyer Account Address")
 web3.eth.getBalance("Contract Address")
 ```
+* Aceptar Contrato: Vendedor acepta el pago
+```
+testing.sellerAccept("Seller Account Address")
+```
+
 

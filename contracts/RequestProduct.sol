@@ -32,13 +32,14 @@ contract RequestProduct {
     }
 
     // funcion de aceptar request por parte del seller
-    function sellerAccept() public {}
+    function sellerAccept() public payable {
+        require(msg.sender==_seller, "To accept you must be the seller");
+        //_seller.transfer(35 ether);
+    }
 
     // Ok del buyer
-    function buyerReserve() external payable {
-        //require(msg.value >= _productPrice, "Not enough ether for purchase");
-        //_buyer.transfer(_productPrice);
-        //require(msg.value == _productPrice,'Not enough ether');
-        //_seller.transfer(80);
+    function buyerReserve() public payable {
+        require((msg.value/1000000000000000000) >= _productPrice, "Not enough ether for purchase");
+
     }
 }

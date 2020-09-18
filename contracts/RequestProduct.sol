@@ -35,7 +35,7 @@ contract RequestProduct {
     function sellerAccept() external payable {
         //recipient.transfer(10 ether);
         require(msg.sender==_seller, "To accept you must be the seller");
-        _seller.transfer(10 ether);
+        _seller.transfer(_productPrice*1e18);
     }
 
     // Ok del buyer

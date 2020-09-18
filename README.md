@@ -26,7 +26,7 @@ Disponible en: https://github.com/universidad-del-istmo/Blockchains-2020/tree/ma
 
 
 ### Comandos para prueba
-* En truffle: Instanciar el contrato y probar la funcion con cierta cuenta y mandando cierta cantidad.
+* En truffle: Instanciar el contrato y probar la funcion con cierta cuenta y mandando cierta cantidad. El contrato esta instanciado por default en la cuenta indicada en migrations/2_RequestProduct.js, es necesario cambiarla a la cuenta del nuevo blockchain.
 ```
 testing = await RequestProduct.deployed();
 testing.buyerReserve({from: "Buyer Account Address", value: "35000000000000000000"})

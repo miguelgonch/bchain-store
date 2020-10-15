@@ -53,8 +53,10 @@ contract Product {
         address buyer = msg.sender;
         require(_stock > 0,"Sorry, we are out of stock");
         require(_stock >= quantity,"We do not have enough products, try with a smaller quantity");
+        require(msg.value==(_price*quantity),"Check the pricetag");
         _productRequests[buyer] = _productRequests[buyer] + quantity;
         Request request = new Request(_productHash,buyer,quantity,this);
+        address(request).transfer(msg.value);
         emit NewRequest(address(request));
     }
     function updateProductRequest(address buyer, uint quantity) external{

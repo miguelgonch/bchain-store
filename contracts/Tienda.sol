@@ -36,7 +36,7 @@ contract Product {
     uint _stock;
     uint public _price;
     Store _storeContract;
-    address payable _storeAddress;
+    address payable public _storeAddress;
     
     event NewRequest(address requestAddress);
 
@@ -85,6 +85,7 @@ contract Request{
     constructor(string memory productHash, address buyer, uint quantity, Product productContract) payable{
         _buyer = payable(buyer);
         _owner = productContract._owner();
+        _storeAddress = productContract._storeAddress();
         _productContract = productContract;
         _productHash = productHash;
         _quantity = quantity;
@@ -95,6 +96,8 @@ contract Request{
         require(msg.sender == _owner,"You're not the seller");
         _productContract.updateProductRequest(_buyer,_quantity);
         _storeAddress.transfer(_amountPayed/100);       // fee 1%
+        //_storeAddress.transfer(1*1e18);
+        _owner.transfer(_amountPayed-(_amountPayed/100));
         selfdestruct(_owner);
     }
     function cancelOffer() public{

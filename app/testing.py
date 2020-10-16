@@ -1,11 +1,11 @@
 from web3 import Web3 
-from flask import Flask
+from flask import Flask,render_template
 
 app = Flask(__name__)
 
 @app.route("/")                   # at the end point /
 
-def main():                      # call method hello
+def main():                      
     w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:8545"))
     w3.eth.defaultAccount = w3.eth.accounts[0]
     contract_address = "0xC56cE9D9EC4074311d3DA8719b520d3Fa843c8e0"
@@ -60,9 +60,9 @@ def main():                      # call method hello
 
     receipt = w3.eth.getTransactionReceipt(newProductFunction)
     events = myContract.events.NewProduct().processReceipt(receipt)
-    event1 = events[0]['args']['productAddress']
-    return event1       # which returns "hello world"
+    event1 = events[0]['args']
+    return render_template("base.html",content=event1)       
 
 
-if __name__ == "__main__":        # on running python app.py
-    app.run()   
+if __name__ == "__main__":        
+    app.run(debug=True)

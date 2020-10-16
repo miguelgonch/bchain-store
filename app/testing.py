@@ -61,7 +61,7 @@ def main():
     receipt = w3.eth.getTransactionReceipt(newProductFunction)
     events = myContract.events.NewProduct().processReceipt(receipt)
     event1 = events[0]['args']
-    return render_template("products/product.html",content=event1,title='Product')       
+    return render_template("catalogue/catalogue.html",content=event1,title='Product')       
 
 
 @app.route("/login")   

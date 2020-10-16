@@ -51,3 +51,6 @@ contract_abi = [
 myContract = w3.eth.contract(address=contract_address, abi=contract_abi)
 newProductFunction = myContract.functions.newProduct("hash",13,5).transact()
 
+receipt = w3.eth.getTransactionReceipt(newProductFunction)
+events = myContract.events.NewProduct().processReceipt(receipt)
+print(events)

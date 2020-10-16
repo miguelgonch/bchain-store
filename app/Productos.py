@@ -1,6 +1,17 @@
 import json
 import hashlib
 import pymongo
+import abis
+from web3 import Web3
+
+w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
+w3.eth.defaultAccount = w3.eth.accounts[0]
+false=False
+
+Store_address = "0xb634E8B98A7fc3022da023d37f0d778E28DF42c6"
+
+store_contract = w3.eth.contract(address=Store_address, abi=abis.abi_store)
+a = store_contract.functions
 
 #Coneccion con la db
 client = pymongo.MongoClient("mongodb+srv://dbUser:dbUser@cluster0.64zqb.mongodb.net/<dbname>?retryWrites=true&w=majority")
@@ -21,7 +32,7 @@ def createDescriptionHash(_descripcion):
     return hashh
 
 def createProduct(_nombre, _precio, _descripcion, _cantidad, db):
-
+    global store_contract
     descripcion = createDescription(_nombre, _precio, _descripcion)
     hashh = createDescriptionHash(descripcion)
 
@@ -32,6 +43,7 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad, db):
     }
     result=db.products.insert_one(producto)
     print(result)
+    newProductFunction = store_contract.functions.newProduct(hashh,_cantidad,_precio).transact()
     return hashh
 
 def checkHash(_hash):
@@ -49,7 +61,7 @@ def hi():
     print('Hello!!')
 print('estas adentro!!!!')
 
-#hashh = createProduct('OracleDB', 10, 'Licencia pirateada de OracleDB', 2, db)
+hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2, db)
 
 #res = db.products.find_one({ "descripcion.nombre": "OracleDB" })
 #print(res['hash'])

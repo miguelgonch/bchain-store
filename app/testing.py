@@ -1,7 +1,7 @@
 from web3 import Web3 
 from flask import Flask,render_template, redirect, url_for, request
 import Productos
-import abis
+from config import abis
 
 app = Flask(__name__)
 
@@ -23,3 +23,14 @@ products = []
 for event in events:
     prodInfo = Productos.checkHash(event['args']['productHash'])
     products.append([event,prodInfo])
+
+eventsFilter = storeContract.events.NewProduct.createFilter(fromBlock="0x0")
+hashVar='0b2d68d68ddb6fb6d0c5345dfe498083'
+events = eventsFilter.get_all_entries()
+products = []
+for event in events:
+    if event['args']['productHash'] == hashVar:
+        prodInfo = Productos.checkHash(event['args']['productHash'])
+        products.append([event,prodInfo])
+var2 = products[0][1]['descripcion']['nombre']
+var = 1

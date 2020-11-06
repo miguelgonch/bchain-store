@@ -13,22 +13,29 @@ store_address = configFile.store_address
 store_abi = abis.abi_store
 storeContract = w3.eth.contract(address=store_address, abi=store_abi)
 
-@app.route("/")                   # at the end point /
+@app.route("/")
+@app.route("/products")                   # at the end point /
 def main():                      
-    
-    #newProductFunction = storeContract.functions.newProduct("hash",13,5).transact()
     eventsFilter = storeContract.events.NewProduct.createFilter(fromBlock="0x0")
     events = eventsFilter.get_all_entries()
-    #receipt = w3.eth.getTransactionReceipt(newProductFunction)
-    #events = storeContract.events.NewProduct().processReceipt(receipt)
-    event1 = events[0]['args']
     products = []
     for event in events:
         prodInfo = Productos.checkHash(event['args']['productHash'])
-        products.append([event,prodInfo])
+        products.append(prodInfo)
     
     return render_template("catalogue/catalogue.html",products=products,title='Product')       
 
+@app.route("/products/<hashVar>")                   # at the end point /
+def productInfo(hashVar):                      
+    eventsFilter = storeContract.events.NewProduct.createFilter(fromBlock="0x0")
+    events = eventsFilter.get_all_entries()
+    products = []
+    for event in events:
+        if event['args']['productHash'] == hashVar:
+            prodInfo = Productos.checkHash(event['args']['productHash'])
+            products.append([event,prodInfo])
+    
+    return render_template("catalogue/product.html",products=products,title=('Product ',products[0][1]['descripcion']['nombre']))       
 
 @app.route("/login")   
 def login():

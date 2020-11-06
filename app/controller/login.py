@@ -39,7 +39,13 @@ def sign(msg,privKeyImp):
     signature = pss.new(privKeyImp).sign(h)
     return signature
     
-def verify(h,signature, pubKeyImp,accoundAddress):
+def verify(h,signature, accountAddress):
+    # public key query
+    client = configFile.mongoClient
+    db = client.productos
+    query = db.keys.find_one({ "account": accountAddress })
+    publicK = query['pubKey']
+    pubKeyImp =  RSA.importKey(publicK)
     # verification
     verifier = pss.new(pubKeyImp)
     try:
@@ -49,13 +55,3 @@ def verify(h,signature, pubKeyImp,accoundAddress):
     except (ValueError, TypeError):
         print("The signature is not authentic.")
         return False
-    
-
-# public key query
-client = configFile.mongoClient
-db = client.productos
-query = db.keys.find_one({ "account": '0x9F460a9A5cC606E7cc20f586723E3DD3Ef6ec758' })
-publicK = query['pubKey']
-pubKeyImp =  RSA.importKey(publicK)
-
-assert(msg == dmsg)

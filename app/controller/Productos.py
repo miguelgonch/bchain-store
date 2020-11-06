@@ -1,21 +1,22 @@
 import json
 import hashlib
-import pymongo
 from config import abis
-from web3 import Web3
+from config import configFile
+from controller import contract
 
-w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
+
+w3 = configFile.w3
 w3.eth.defaultAccount = w3.eth.accounts[0]
 false=False
 
-Store_address = "0x09Fa82656A7E17075F3640F5e6C692C6E58167C8"
+Store_address = configFile.store_address
 
 store_contract = w3.eth.contract(address=Store_address, abi=abis.abi_store)
 a = store_contract.functions
 
 #Coneccion con la db
 
-client = pymongo.MongoClient("mongodb+srv://dbUser:dbUser@cluster0.64zqb.mongodb.net/<dbname>?retryWrites=true&w=majority")
+client = configFile.mongoClient
 db = client.productos
 
 #crear json de la descripcion del producto
@@ -45,7 +46,12 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad):
     }
     result=db.products.insert_one(producto)
     print(result)
-    store_contract.functions.newProduct(hashh,_cantidad,_precio).transact()
+    #store_contract.functions.newProduct(hashh,_cantidad,_precio).transact()
+    transactionStatus = contract.newProduct(hashh,_cantidad,_precio,1)
+    if transactionStatus:
+        pass
+    else:
+        print("Error")
     return hashh
 
 def checkHash(_hash):

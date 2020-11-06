@@ -8,7 +8,7 @@ w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:8545"))
 w3.eth.defaultAccount = w3.eth.accounts[0]
 false=False
 
-Store_address = "0xb634E8B98A7fc3022da023d37f0d778E28DF42c6"
+Store_address = "0x04EAd0208242243BBAc66bd4d03043aB804E38B7"
 
 store_contract = w3.eth.contract(address=Store_address, abi=abis.abi_store)
 a = store_contract.functions
@@ -32,8 +32,9 @@ def createDescriptionHash(_descripcion):
     hashh = hashlib.md5(bDescripcion).hexdigest()
     return hashh
 
-def createProduct(_nombre, _precio, _descripcion, _cantidad, db):
-    global store_contract
+#def createProduct(_nombre, _precio, _descripcion, _cantidad, db):
+def createProduct(_nombre, _precio, _descripcion, _cantidad):
+    global store_contract, db
     descripcion = createDescription(_nombre, _precio, _descripcion)
     hashh = createDescriptionHash(descripcion)
 
@@ -44,7 +45,7 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad, db):
     }
     result=db.products.insert_one(producto)
     print(result)
-    newProductFunction = store_contract.functions.newProduct(hashh,_cantidad,_precio).transact()
+    store_contract.functions.newProduct(hashh,_cantidad,_precio).transact()
     return hashh
 
 def checkHash(_hash):
@@ -53,7 +54,8 @@ def checkHash(_hash):
     if res['hash']==_hash:
         print('yay')    
 
-def deleteProduct(_hash, db):
+def deleteProduct(_hash):
+    global db
     result = db.products.delete_one({'hash': _hash})
     if result:
         print('Entrada Eliminada')
@@ -69,15 +71,13 @@ def findAll():
 
 def hi():
     print('Hello!!')
-print('estas adentro!!!!')
 
-prodsData = findAll()
-print(prodsData)    
-hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2, db)
+def listProducts():
+    res = db.products.find({})
+    for r in res:
+        print(r)
 
-#res = db.products.find_one({ "descripcion.nombre": "OracleDB" })
-#print(res['hash'])
-#if res['hash']==hashh:
-#    print('yay')
-
-#SendJSON
+#deleteProduct('28faaedf5071618129249db937bf59a1')
+#prods = listProducts()
+#hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2, db)
+#hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2)

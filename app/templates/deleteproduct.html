@@ -1,0 +1,18 @@
+{% extends 'base.html' %} 
+{% block content %}
+  <!-- Page Heading -->
+  <h1 class="justify-content-center" style="text-align: center">
+    Producto Nuevo
+  </h1>
+    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto form p-4">
+        <div class="px-2">
+            <form action="/delete-prod" method="post" class="justify-content-center">
+                <div class="form-group">
+                    <label for="">Hash del producto:</label>
+                    <input type="text" id="hash" name="hash" placeholder="Ej: 11c3372c1b6d811b7131ed337f0a04e3" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Eliminar Producto</button>
+            </form>
+        </div>
+    </div>
+  {% endblock %}

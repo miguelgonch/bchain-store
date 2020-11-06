@@ -1,19 +1,20 @@
 import json
 import hashlib
 import pymongo
-import abis
+from config import abis
 from web3 import Web3
 
 w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
 w3.eth.defaultAccount = w3.eth.accounts[0]
 false=False
 
-Store_address = "0x04a1dC9D59Bb45aD9A984f52D1c898Aa022D56F0"
+Store_address = "0x09Fa82656A7E17075F3640F5e6C692C6E58167C8"
 
 store_contract = w3.eth.contract(address=Store_address, abi=abis.abi_store)
 a = store_contract.functions
 
 #Coneccion con la db
+
 client = pymongo.MongoClient("mongodb+srv://dbUser:dbUser@cluster0.64zqb.mongodb.net/<dbname>?retryWrites=true&w=majority")
 db = client.productos
 
@@ -48,10 +49,9 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad):
     return hashh
 
 def checkHash(_hash):
-    res = db.products.find_one({ "descripcion.nombre": "OracleDB" })
-    print(res['hash'])
-    if res['hash']==_hash:
-        print('yay')    
+    query = db.products.find_one({ "hash": _hash })
+    if query['hash']==_hash:
+        return query   
 
 def deleteProduct(_hash):
     global db
@@ -63,9 +63,11 @@ def hi():
     print('Hello!!')
 
 def listProducts():
-    res = db.products.find({})
-    for r in res:
-        print(r)
+    query = db.products.find({})
+    products = []
+    for product in query:
+        products.append(product)
+    return products
 
 def uploadkey(public, private):
     #public={'publicK':public}

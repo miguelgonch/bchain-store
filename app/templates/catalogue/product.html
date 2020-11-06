@@ -18,12 +18,12 @@
         </a>
         </div>
         <div class="col-md-5">
-        <h3>Product {{product['descripcion']['nombre']}}</h3>
+        <h3>Product {{product[1]['descripcion']['nombre']}}</h3>
         <p>
-            {{product['descripcion']['descripcion']}}
+            {{product[1]['descripcion']['descripcion']}}
         </p>
-        <h1>{{product['descripcion']['precio']}} wei</h1>
-        <a class="btn btn-primary" href="/products/{{product['hash']}}">View Product</a>
+        <h1>{{product[1]['descripcion']['precio']}} wei</h1>
+        <a class="btn btn-primary" href="/products/{{product[1]['descripcion']['descripcion']}}">View Product</a>
         </div>
     </div>
     <!-- /.row -->

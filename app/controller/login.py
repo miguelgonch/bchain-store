@@ -37,15 +37,19 @@ def sign(msg,privKeyImp):
     msg = b'attack at dawn'
     h = SHA256.new(msg)
     signature = pss.new(privKeyImp).sign(h)
+    return signature
     
-def verify(h,signature, pubKeyImp):
+def verify(h,signature, pubKeyImp,accoundAddress):
     # verification
     verifier = pss.new(pubKeyImp)
     try:
         verifier.verify(h, signature)
         print("The signature is authentic.")
+        return True
     except (ValueError, TypeError):
         print("The signature is not authentic.")
+        return False
+    
 
 # public key query
 client = configFile.mongoClient

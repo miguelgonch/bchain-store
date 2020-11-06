@@ -32,8 +32,8 @@ contract Product {
     address payable public _owner;
     // address cliente => cantidad
     mapping(address=>uint) _productRequests;
-    string _productHash;
-    uint _stock;
+    string public _productHash;
+    uint public _stock;
     uint public _price;
     Store _storeContract;
     address payable public _storeAddress;

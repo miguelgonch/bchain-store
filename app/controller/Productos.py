@@ -3,6 +3,7 @@ import hashlib
 from config import abis
 from config import configFile
 from controller import contract
+from Crypto.PublicKey import RSA
 
 
 w3 = configFile.w3
@@ -34,7 +35,7 @@ def createDescriptionHash(_descripcion):
     return hashh
 
 #def createProduct(_nombre, _precio, _descripcion, _cantidad, db):
-def createProduct(_nombre, _precio, _descripcion, _cantidad):
+def createProduct(_nombre, _precio, _descripcion, _cantidad,_account):
     global store_contract, db
     descripcion = createDescription(_nombre, _precio, _descripcion)
     hashh = createDescriptionHash(descripcion)
@@ -46,8 +47,13 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad):
     }
     result=db.products.insert_one(producto)
     print(result)
+    if _account:
+        accountId = contract.getAccountId(_account)
+    else:
+        accountId = 0
+        print("No account found")
     #store_contract.functions.newProduct(hashh,_cantidad,_precio).transact()
-    transactionStatus = contract.newProduct(hashh,_cantidad,_precio,1)
+    transactionStatus = contract.newProduct(hashh,_cantidad,_precio,accountId)
     if transactionStatus:
         pass
     else:
@@ -75,7 +81,11 @@ def listProducts():
         products.append(product)
     return products
 
-def uploadkey(public, private):
+def uploadkey(public, account):
+    key = RSA.generate(2048)
+    binPubKey =  key.publickey().exportKey('PEM')
+    data = {'account':account,'pubKey':str(binPubKey)}
+    result=db.keys.insert_one(data)
     #public={'publicK':public}
     #result=db.keys.insert_one(public)
     #public = {'key':str(public)}
@@ -87,16 +97,6 @@ def uploadkey(public, private):
 
     # encrypted_message = rsa.encrypt(message, public_key)
     # decrypted_message = rsa.decrypt(encrypted_message, private_key)
-
-import rsa
-
-def generateKeys():
-    public_key, private_key = rsa.newkeys(48)
-    return public_key, private_key
-
-key = generateKeys()
-print(type(key[0]))
-uploadkey(key[0],key[1])
 
 #deleteProduct('28faaedf5071618129249db937bf59a1')
 #prods = listProducts()

@@ -1,5 +1,6 @@
 from flask import Flask,render_template, redirect, url_for, request
 from controller import Productos
+from controller import contract
 from config import configFile
 from config import abis
 import KeyGenerator
@@ -19,22 +20,31 @@ def main():
     eventsFilter = storeContract.events.NewProduct.createFilter(fromBlock="0x0")
     events = eventsFilter.get_all_entries()
     products = []
+    content = ''
     for event in events:
-        prodInfo = Productos.checkHash(event['args']['productHash'])
-        products.append(prodInfo)
-    
-    return render_template("catalogue/catalogue.html",products=products,title='Product')       
+        prodHash = event['args']['productHash']
+        availableStock = contract.getProductStock(prodHash)
+        if availableStock>0:
+            prodInfo = Productos.checkHash(prodHash)
+            products.append(prodInfo)
+    if len(products) == 0:
+        content = 'No hay productos disponibles'
+    return render_template("catalogue/catalogue.html",products=products,content=content,title='Products')
 
 @app.route("/products/<hashVar>")                   # at the end point /
 def productInfo(hashVar):                      
     eventsFilter = storeContract.events.NewProduct.createFilter(fromBlock="0x0")
     events = eventsFilter.get_all_entries()
     products = []
+    title = ''
     for event in events:
         if event['args']['productHash'] == hashVar:
             prodInfo = Productos.checkHash(event['args']['productHash'])
             products.append([event,prodInfo])
-    title = ('Product: '+products[0][1]['descripcion']['nombre'])
+            title = ('Product: '+products[0][1]['descripcion']['nombre'])
+        else:
+            title = 'Not Found'
+
     return render_template("catalogue/product.html",products=products,title=title)       
 
 @app.route("/login")   
@@ -59,7 +69,11 @@ def newProductCon():
     precio = int(request.form['precio'])
     descripcion = request.form['descripcion']
     cantidad = int(request.form['cantidad'])
-    Productos.createProduct(producto,precio,descripcion,cantidad)
+    if 'account' in request.cookies:
+        account = request.cookies.get['account']
+    else:
+        account = False
+    Productos.createProduct(producto,precio,descripcion,cantidad,account)
     return redirect(url_for('main'))
 
 @app.route("/delete-prod", methods = ['GET', 'POST'])
@@ -68,15 +82,17 @@ def deleteProductCon():
     Productos.deleteProduct(hashh)
     return redirect(url_for('main'))
 
-@app.route("/RSA-Generator")
+@app.route("/RSA-Generator",methods = ['POST'])
 def generateRSA():
-    keys = KeyGenerator.generateKeys()
-    #Productos.uploadkey(keys[0])
-    return render_template(
-        "giveKeys.html",
-        public=keys[0],
-        private=keys[1]
-    )
+    if request.method == 'POST':
+        account = request.form['account']
+        keys = KeyGenerator.generateKeys()
+        Productos.uploadkey(keys[0],account)
+        return render_template(
+            "giveKeys.html",
+            public=keys[0],
+            private=keys[1]
+        )
 
     
 if __name__ == "__main__":        

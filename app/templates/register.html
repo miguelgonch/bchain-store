@@ -1,14 +1,31 @@
 {% extends 'base.html' %} 
 {% block content %}
   <!-- Page Heading -->
-    <h1 class="justify-content-center" style="text-align: center">
-        Producto Nuevo
-    </h1>
-        <div class="justify-content-center" style="text-align: center">
-        <p>Este sitio funciona mediante llaves RSA. Para generar tus llaves preciona el boton Generar llaves</p>
-
-            <form action="/RSA-Generator" method="get" class="justify-content-center">
-                <button type="submit" class="btn btn-primary">Generar Llaves</button>
-            </form>
-        </div>
+        <!-- <div class="justify-content-center" style="text-align: center"> -->
+        <div class="container-fluid">
+            <div class="row no-gutter">
+              <div class="d-none d-md-flex col-md-12 col-lg-12 bg-image"></div>
+              <div class="col-md-12 col-lg-12">
+                <div class="login d-flex align-items-center py-5">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12 mx-auto">
+                        <h1 class="justify-content-center my-4" style="text-align: center">
+                            Creación de llaves
+                        </h1>
+                        <p>Este sitio funciona mediante llaves RSA. Para generar tus llaves preciona el boton Generar llaves</p>
+                        <form action="/RSA-Generator" method="POST" class="justify-content-center">
+                            <div class="form-label-group">
+                                <input type="text" class="form-control" placeholder="Account Address: Ej: 0x682eE..." name='account' required autofocus>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary ">Generar Llaves</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 {% endblock %}

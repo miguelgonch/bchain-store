@@ -5,6 +5,9 @@
     Bchain Store
     <small>Products</small>
   </h1>
+  {% if content != '' %}
+  <p>{{content}}</p>
+  {% endif %}
   {% for product in products %}
     <!-- Project One -->
     <div class="row">

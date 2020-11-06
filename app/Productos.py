@@ -4,11 +4,11 @@ import pymongo
 import abis
 from web3 import Web3
 
-w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:8545"))
+w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
 w3.eth.defaultAccount = w3.eth.accounts[0]
 false=False
 
-Store_address = "0x04EAd0208242243BBAc66bd4d03043aB804E38B7"
+Store_address = "0x09Fa82656A7E17075F3640F5e6C692C6E58167C8"
 
 store_contract = w3.eth.contract(address=Store_address, abi=abis.abi_store)
 a = store_contract.functions
@@ -49,10 +49,9 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad):
     return hashh
 
 def checkHash(_hash):
-    res = db.products.find_one({ "descripcion.nombre": "OracleDB" })
-    print(res['hash'])
-    if res['hash']==_hash:
-        print('yay')    
+    query = db.products.find_one({ "hash": _hash })
+    if query['hash']==_hash:
+        return query   
 
 def deleteProduct(_hash):
     global db
@@ -60,22 +59,15 @@ def deleteProduct(_hash):
     if result:
         print('Entrada Eliminada')
 
-def findAll():
-    result = db.products
-    results = []
-    for prods in result.find({}):
-        results.append(prods)
-    
-    if results:
-        return results
-
 def hi():
     print('Hello!!')
 
 def listProducts():
-    res = db.products.find({})
-    for r in res:
-        print(r)
+    query = db.products.find({})
+    products = []
+    for product in query:
+        products.append(product)
+    return products
 
 #deleteProduct('28faaedf5071618129249db937bf59a1')
 #prods = listProducts()

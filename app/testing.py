@@ -10,11 +10,7 @@ app = Flask(__name__)
 def main():                      
     w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
     w3.eth.defaultAccount = w3.eth.accounts[0]
-<<<<<<< HEAD
     contract_address = "0xb994cbd783D1201F01E7B8FcB7145CFC7063693b"
-=======
-    contract_address = "0x04EAd0208242243BBAc66bd4d03043aB804E38B7"
->>>>>>> acee9f2ac1a98878f9187fc4c78b7226ec2b1d7c
     contract_abi = [
         {
             "inputs": [

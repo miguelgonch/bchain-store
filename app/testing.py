@@ -68,43 +68,4 @@ private = keys[1]
 privateKeyInfo = [private]
 
 info = puplicKeyInfo
-
-from Crypto.PublicKey import RSA
-from Crypto.Util import asn1
-from Crypto.Cipher import PKCS1_OAEP
-from base64 import b64decode
-from Crypto.Signature import pss
-from Crypto.Hash import SHA256
-
-key = RSA.generate(2048)
-
-binPrivKey = key.exportKey('PEM')
-binPubKey =  key.publickey().exportKey('PEM')
-
-privKeyImp = RSA.importKey(binPrivKey)
-privKeyObj = PKCS1_OAEP.new(privKeyImp)
-pubKeyImp =  RSA.importKey(binPubKey)
-pubKeyObj = PKCS1_OAEP.new(pubKeyImp)
-
-msg = b'attack at dawn'
-emsg = pubKeyObj.encrypt(msg)
-dmsg = privKeyObj.decrypt(emsg)
-#sign
-msg2 = b'attack at dawn'
-h = SHA256.new(msg2)
-signature = pss.new(privKeyImp).sign(h)
-verifier = pss.new(pubKeyImp)
-try:
-    verifier.verify(h, signature)
-    print("The signature is authentic.")
-except (ValueError, TypeError):
-    print("The signature is not authentic.")
-
-client = configFile.mongoClient
-db = client.productos
-query = db.keys.find_one({ "account": '0x9F460a9A5cC606E7cc20f586723E3DD3Ef6ec758' })
-publicK = query['pubKey']
-pubKeyImp =  RSA.importKey(binPubKey)
-
-assert(msg == dmsg)
 #Productos.uploadkey(keys[0],account)

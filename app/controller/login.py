@@ -6,30 +6,36 @@ from config import configFile
 
 def createKeys():
     key = RSA.generate(2048)
-
     # Key creation
     binPrivKey = key.exportKey('PEM')
     binPubKey =  key.publickey().exportKey('PEM')
+    return binPrivKey,binPubKey
 
 def importKeys(binPrivKey,binPubKey):
-        # Key imports
+    # Key imports
     privKeyImp = RSA.importKey(binPrivKey)
     pubKeyImp =  RSA.importKey(binPubKey)
+    return privKeyImp,pubKeyImp
 
 def getKeyObjects(privKeyImp,pubKeyImp):
     # Encryption objects
     privKeyObj = PKCS1_OAEP.new(privKeyImp)
     pubKeyObj = PKCS1_OAEP.new(pubKeyImp)
+    return privKeyObj,pubKeyObj
 
-def encrypt(msg,pubKeyObj,privKeyObj):
+def encrypt(msg,pubKeyObj):
     #msg = b'attack atdawn'
     emsg = pubKeyObj.encrypt(msg)
+    return emsg
+
+def decrypt(emsg,privKeyObj):
     dmsg = privKeyObj.decrypt(emsg)
+    return dmsg
 
 def sign(msg,privKeyImp):
     # signature
-    msg2 = b'attack at dawn'
-    h = SHA256.new(msg2)
+    msg = b'attack at dawn'
+    h = SHA256.new(msg)
     signature = pss.new(privKeyImp).sign(h)
     
 def verify(h,signature, pubKeyImp):

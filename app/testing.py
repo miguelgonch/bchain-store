@@ -1,14 +1,16 @@
 from web3 import Web3 
-from flask import Flask,render_template
+from flask import Flask,render_template, redirect, url_for, request
+import Productos
+
 
 app = Flask(__name__)
 
 @app.route("/")                   # at the end point /
 
 def main():                      
-    w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:8545"))
+    w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
     w3.eth.defaultAccount = w3.eth.accounts[0]
-    contract_address = "0xC56cE9D9EC4074311d3DA8719b520d3Fa843c8e0"
+    contract_address = "0x04EAd0208242243BBAc66bd4d03043aB804E38B7"
     contract_abi = [
         {
             "inputs": [
@@ -68,5 +70,17 @@ def main():
 def login():
     return render_template("login.html")
 
+@app.route("/new-product")
+def newProduct():
+   return render_template("newproduct.html")
+
+@app.route("/add-product", methods = ['GET', 'POST'])
+def newProductCon():
+    producto = request.form['name']
+    precio = int(request.form['precio'])
+    descripcion = request.form['descripcion']
+    cantidad = int(request.form['cantidad'])
+    Productos.createProduct(producto,precio,descripcion,cantidad)
+    return redirect(url_for('main'))
 if __name__ == "__main__":        
     app.run(debug=True)

@@ -1,0 +1,14 @@
+{% extends 'base.html' %} 
+{% block content %}
+  <!-- Page Heading -->
+    <h1 class="justify-content-center" style="text-align: center">
+        Producto Nuevo
+    </h1>
+        <div class="justify-content-center" style="text-align: center">
+        <p>Este sitio funciona mediante llaves RSA. Para generar tus llaves preciona el boton Generar llaves</p>
+
+            <form action="/RSA-Generator" method="get" class="justify-content-center">
+                <button type="submit" class="btn btn-primary">Generar Llaves</button>
+            </form>
+        </div>
+{% endblock %}

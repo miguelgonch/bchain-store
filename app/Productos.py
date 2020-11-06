@@ -8,7 +8,7 @@ w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
 w3.eth.defaultAccount = w3.eth.accounts[0]
 false=False
 
-Store_address = "0x04EAd0208242243BBAc66bd4d03043aB804E38B7"
+Store_address = "0x04a1dC9D59Bb45aD9A984f52D1c898Aa022D56F0"
 
 store_contract = w3.eth.contract(address=Store_address, abi=abis.abi_store)
 a = store_contract.functions
@@ -66,6 +66,29 @@ def listProducts():
     res = db.products.find({})
     for r in res:
         print(r)
+
+def uploadkey(public, private):
+    #public={'publicK':public}
+    #result=db.keys.insert_one(public)
+    #public = {'key':str(public)}
+    #result=db.keys.insert_one(public)
+    public = str(public)
+
+    #encripted = rsa.encrypt(b"This is the message to be encrypted", public)
+    #key.decrypt(ast.literal_eval(str(encrypted)))
+
+    # encrypted_message = rsa.encrypt(message, public_key)
+    # decrypted_message = rsa.decrypt(encrypted_message, private_key)
+
+import rsa
+
+def generateKeys():
+    public_key, private_key = rsa.newkeys(48)
+    return public_key, private_key
+
+key = generateKeys()
+print(type(key[0]))
+uploadkey(key[0],key[1])
 
 #deleteProduct('28faaedf5071618129249db937bf59a1')
 #prods = listProducts()

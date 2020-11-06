@@ -1,6 +1,7 @@
 from web3 import Web3 
 from flask import Flask,render_template, redirect, url_for, request
 import Productos
+import KeyGenerator
 
 
 app = Flask(__name__)
@@ -10,7 +11,7 @@ app = Flask(__name__)
 def main():                      
     w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
     w3.eth.defaultAccount = w3.eth.accounts[0]
-    contract_address = "0x04EAd0208242243BBAc66bd4d03043aB804E38B7"
+    contract_address = "0x04a1dC9D59Bb45aD9A984f52D1c898Aa022D56F0"
     contract_abi = [
         {
             "inputs": [
@@ -70,6 +71,10 @@ def main():
 def login():
     return render_template("login.html")
 
+@app.route("/register")   
+def register():
+    return render_template("register.html")
+
 @app.route("/new-product")
 def newProduct():
    return render_template("newproduct.html")
@@ -93,6 +98,16 @@ def deleteProductCon():
     Productos.deleteProduct(hashh)
     return redirect(url_for('main'))
 
-    
+@app.route("/RSA-Generator")
+def generateRSA():
+    keys = KeyGenerator.generateKeys()
+    #Productos.uploadkey(keys[0])
+    return render_template(
+        "giveKeys.html",
+        public=keys[0],
+        private=keys[1]
+    )
+
+
 if __name__ == "__main__":        
     app.run(debug=True)

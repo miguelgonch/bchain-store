@@ -74,6 +74,10 @@ def login():
 def newProduct():
    return render_template("newproduct.html")
 
+@app.route("/delete-product")
+def deleteProduct():
+   return render_template("deleteproduct.html")
+
 @app.route("/add-product", methods = ['GET', 'POST'])
 def newProductCon():
     producto = request.form['name']
@@ -82,5 +86,13 @@ def newProductCon():
     cantidad = int(request.form['cantidad'])
     Productos.createProduct(producto,precio,descripcion,cantidad)
     return redirect(url_for('main'))
+
+@app.route("/delete-prod", methods = ['GET', 'POST'])
+def deleteProductCon():
+    hashh = request.form['hash']
+    Productos.deleteProduct(hashh)
+    return redirect(url_for('main'))
+
+    
 if __name__ == "__main__":        
     app.run(debug=True)

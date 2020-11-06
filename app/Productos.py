@@ -53,7 +53,8 @@ def checkHash(_hash):
     if res['hash']==_hash:
         print('yay')    
 
-def deleteProduct(_hash, db):
+def deleteProduct(_hash):
+    global db
     result = db.products.delete_one({'hash': _hash})
     if result:
         print('Entrada Eliminada')
@@ -66,6 +67,7 @@ def listProducts():
     for r in res:
         print(r)
 
-prods = listProducts()
+#deleteProduct('28faaedf5071618129249db937bf59a1')
+#prods = listProducts()
 #hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2, db)
 #hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2)

@@ -4,7 +4,7 @@ import pymongo
 import abis
 from web3 import Web3
 
-w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
+w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:8545"))
 w3.eth.defaultAccount = w3.eth.accounts[0]
 false=False
 
@@ -14,6 +14,7 @@ store_contract = w3.eth.contract(address=Store_address, abi=abis.abi_store)
 a = store_contract.functions
 
 #Coneccion con la db
+
 client = pymongo.MongoClient("mongodb+srv://dbUser:dbUser@cluster0.64zqb.mongodb.net/<dbname>?retryWrites=true&w=majority")
 db = client.productos
 
@@ -57,10 +58,21 @@ def deleteProduct(_hash, db):
     if result:
         print('Entrada Eliminada')
 
+def findAll():
+    result = db.products
+    results = []
+    for prods in result.find({}):
+        results.append(prods)
+    
+    if results:
+        return results
+
 def hi():
     print('Hello!!')
 print('estas adentro!!!!')
 
+prodsData = findAll()
+print(prodsData)    
 hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2, db)
 
 #res = db.products.find_one({ "descripcion.nombre": "OracleDB" })

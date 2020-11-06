@@ -1,14 +1,15 @@
 from web3 import Web3 
 from flask import Flask,render_template, redirect, url_for, request
 import Productos
-import abis
+from config import configFile
+from config import abis
 
 app = Flask(__name__)
 
 # w3 and contract variables
-w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))
+w3 = Web3(Web3.WebsocketProvider(configFile.wsURL))
 w3.eth.defaultAccount = w3.eth.accounts[0]
-store_address = "0x9cD5Eaef94D5c126C391D083F4c5F53da91747e8"
+store_address = configFile.store_address
 store_abi = abis.abi_store
 storeContract = w3.eth.contract(address=store_address, abi=store_abi)
 

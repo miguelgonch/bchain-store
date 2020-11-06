@@ -1,7 +1,7 @@
 import json
 import hashlib
 import pymongo
-import abis
+from config import abis
 from web3 import Web3
 
 w3 = Web3(Web3.WebsocketProvider("ws://127.0.0.1:9000"))

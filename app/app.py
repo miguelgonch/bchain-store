@@ -34,8 +34,8 @@ def productInfo(hashVar):
         if event['args']['productHash'] == hashVar:
             prodInfo = Productos.checkHash(event['args']['productHash'])
             products.append([event,prodInfo])
-    
-    return render_template("catalogue/product.html",products=products,title=('Product ',products[0][1]['descripcion']['nombre']))       
+    title = ('Product: '+products[0][1]['descripcion']['nombre'])
+    return render_template("catalogue/product.html",products=products,title=title)       
 
 @app.route("/login")   
 def login():

@@ -75,6 +75,29 @@ def listProducts():
         products.append(product)
     return products
 
+def uploadkey(public, private):
+    #public={'publicK':public}
+    #result=db.keys.insert_one(public)
+    #public = {'key':str(public)}
+    #result=db.keys.insert_one(public)
+    public = str(public)
+
+    #encripted = rsa.encrypt(b"This is the message to be encrypted", public)
+    #key.decrypt(ast.literal_eval(str(encrypted)))
+
+    # encrypted_message = rsa.encrypt(message, public_key)
+    # decrypted_message = rsa.decrypt(encrypted_message, private_key)
+
+import rsa
+
+def generateKeys():
+    public_key, private_key = rsa.newkeys(48)
+    return public_key, private_key
+
+key = generateKeys()
+print(type(key[0]))
+uploadkey(key[0],key[1])
+
 #deleteProduct('28faaedf5071618129249db937bf59a1')
 #prods = listProducts()
 #hashh = createProduct('Oracle', 10, 'Licencia pirateada de OracleDB', 2, db)

@@ -2,6 +2,7 @@ from flask import Flask,render_template, redirect, url_for, request
 from controller import Productos
 from config import configFile
 from config import abis
+import KeyGenerator
 
 app = Flask(__name__)
 
@@ -40,6 +41,10 @@ def productInfo(hashVar):
 def login():
     return render_template("login.html")
 
+@app.route("/register")   
+def register():
+    return render_template("register.html")
+
 @app.route("/new-product")
 def newProduct():
    return render_template("newproduct.html")
@@ -62,6 +67,16 @@ def deleteProductCon():
     hashh = request.form['hash']
     Productos.deleteProduct(hashh)
     return redirect(url_for('main'))
+
+@app.route("/RSA-Generator")
+def generateRSA():
+    keys = KeyGenerator.generateKeys()
+    #Productos.uploadkey(keys[0])
+    return render_template(
+        "giveKeys.html",
+        public=keys[0],
+        private=keys[1]
+    )
 
     
 if __name__ == "__main__":        

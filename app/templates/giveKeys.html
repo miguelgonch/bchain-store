@@ -1,0 +1,19 @@
+{% extends 'base.html' %} 
+{% block content %}
+  <!-- Page Heading -->
+  <div>
+  <h1 class="justify-content-center" style="text-align: center">
+    Llave Publica
+  </h1>
+  <p style="word-wrap: break-word">{{ public }}</p>
+  </div>
+
+  <div>
+  <h1 class="justify-content-center" style="text-align: center">
+    Llave Privada
+  </h1>
+  <p style="word-wrap: break-word">{{ private }}</p>
+</div>
+    <button href="/login" class="btn btn-primary btn-login text-uppercase font-weight-bold mb-2 text-center" type="submit">Log-in</button>
+</div>
+  {% endblock %}

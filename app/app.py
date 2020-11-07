@@ -1,4 +1,4 @@
-from flask import Flask,render_template, redirect, url_for, request
+from flask import Flask,render_template, redirect, url_for, request,make_response
 from controller import Productos
 from controller import contract
 from controller import login as Login
@@ -48,9 +48,27 @@ def productInfo(hashVar):
 
     return render_template("catalogue/product.html",products=products,title=title)       
 
-@app.route("/login")   
+@app.route("/login",methods = ['POST','GET'])   
 def login():
-    return render_template("login.html")
+    if request.method == 'POST':
+        accountAddress = request.form['account']
+        privKey = request.form['key']
+        privKey = privKey.replace('\\n','\n')
+        msg = b'attack at dawn'
+        binPrivKey = bytes(privKey,'utf8')
+        binPubKey = Productos.getKey(accountAddress)
+        Productos.uploadkey(binPubKey,accountAddress)
+        privKeyImp,pubKeyImp = Login.importKeys(binPrivKey,binPubKey)
+        signature,h = Login.sign(msg,privKeyImp)
+        verification = Login.verify(h,signature, accountAddress)
+        if verification:
+            resp = make_response(render_template('base.html'))
+            resp.set_cookie('account',accountAddress)
+            return resp
+        else:
+            return render_template("login.html",palabra='Failure')
+    if request.method == 'GET':
+        return render_template("login.html",palabra='attack at dawn')
 
 @app.route("/register")   
 def register():
@@ -94,7 +112,6 @@ def generateRSA():
             public=keys[1],
             private=keys[0]
         )
-
     
 if __name__ == "__main__":        
     app.run(debug=True)

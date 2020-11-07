@@ -1,9 +1,9 @@
 import json
 import hashlib
-from config import abis
-from config import configFile
-from controller import contract
-from Crypto.PublicKey import RSA
+#from config import abis
+#from config import configFile
+#from controller import contract
+#from Crypto.PublicKey import RSA
 
 
 w3 = configFile.w3
@@ -99,3 +99,15 @@ def getKey(account):
         return result['pubKey']
     else:
         return False
+
+def reduceProductQuantity(_hash):
+    #myquery = { "hash": _hash }
+    myquery = { "hash": '71f2a4442cf3a4d7457e522f4d770980' }
+    query = db.products.find_one(myquery)
+    nuevaCantidad = int(query['cantidad']) - 1
+    updateQuantity = { "$set": { "cantidad": nuevaCantidad } }
+    db.products.update_one(myquery, updateQuantity)
+    a=1
+
+reduceProductQuantity('hashlib2')
+

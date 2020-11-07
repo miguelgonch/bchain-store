@@ -105,9 +105,8 @@ def newProductCon():
 
 @app.route("/buy-product", methods = ['GET', 'POST'])
 def buyProduct():
-    #print(request.form['productAddress'])
-    #contract.createProductRequest(request.form['productAddress'], {'from': w3.eth.accounts[accountNum],'value': offer})
     contract.createProductRequest(request.form['productAddress'])
+    Productos.reduceProductQuantity(request.form['productHash'])
     return redirect(url_for('main'))
 
 @app.route("/delete-prod", methods = ['GET', 'POST'])

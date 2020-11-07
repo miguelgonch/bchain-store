@@ -25,6 +25,11 @@
         <p>Address: {{product[0]['args']['productAddress']}}</p>
         <p>Product Hash: {{product[0]['args']['productHash']}}</p>
         <h1>{{product[1]['descripcion']['precio']}} wei</h1>
+        <form action="/buy-product" method="POST">
+          <input type="hidden" id="productAddress" name="productAddress" value={{product[0]['args']['productAddress']}}>
+          <button type="submit" class="btn btn-primary"> Comprar</button>
+        </form>
+                  
         </div>
     </div>
     <!-- /.row -->

@@ -77,6 +77,13 @@ def newProductCon():
     Productos.createProduct(producto,precio,descripcion,cantidad,account)
     return redirect(url_for('main'))
 
+@app.route("/buy-product", methods = ['GET', 'POST'])
+def buyProduct():
+    #print(request.form['productAddress'])
+    #contract.createProductRequest(request.form['productAddress'], {'from': w3.eth.accounts[accountNum],'value': offer})
+    contract.createProductRequest(request.form['productAddress'])
+    return redirect(url_for('main'))
+
 @app.route("/delete-prod", methods = ['GET', 'POST'])
 def deleteProductCon():
     hashh = request.form['hash']

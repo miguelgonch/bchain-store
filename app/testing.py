@@ -42,8 +42,11 @@ from controller import login
 from controller import Productos
 msg = b'attack at dawn'
 binPrivKey,binPubKey = login.createKeys()
-privKeyImp,pubKeyImp = login.importKeys(binPrivKey,binPubKey)
 Productos.uploadkey(binPubKey,'0x9F460a9A5cC606E7cc20f586723E3DD3Ef6ec759')
+
+
+
+privKeyImp,pubKeyImp = login.importKeys(binPrivKey,binPubKey)
 signature,h = login.sign(msg,privKeyImp)
 verification = login.verify(h,signature, "0x9F460a9A5cC606E7cc20f586723E3DD3Ef6ec759")
 check = verification

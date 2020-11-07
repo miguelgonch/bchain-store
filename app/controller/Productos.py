@@ -83,9 +83,19 @@ def listProducts():
 
 def uploadkey(binPubKey, account):
     #data = {'account':account,'pubKey':str(binPubKey)}
-    data = {'account':account,'pubKey':(binPubKey)}
-    result = db.keys.insert_one(data)
+    checkAccount = getKey(account)
+    if not(checkAccount):
+        data = {'account':account,'pubKey':(binPubKey)}
+        result = db.keys.insert_one(data)
+        if result:
+            return True
+        else:
+            return False
+    else:
+        return False
+def getKey(account):
+    result = db.keys.find_one({"account":account})
     if result:
-        return True
+        return result['pubKey']
     else:
         return False

@@ -13,8 +13,8 @@ def createKeys():
 
 def importKeys(binPrivKey,binPubKey):
     # Key imports
-    privKeyImp = RSA.importKey(binPrivKey)
     pubKeyImp =  RSA.importKey(binPubKey)
+    privKeyImp = RSA.importKey(binPrivKey)
     return privKeyImp,pubKeyImp
 
 def getKeyObjects(privKeyImp,pubKeyImp):

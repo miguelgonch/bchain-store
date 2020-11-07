@@ -1,4 +1,4 @@
-from flask import Flask,render_template, redirect, url_for, request
+from flask import Flask,render_template, redirect, url_for, request,make_response
 from controller import Productos
 from controller import contract
 from controller import login as Login
@@ -15,8 +15,8 @@ store_address = configFile.store_address
 store_abi = abis.abi_store
 storeContract = w3.eth.contract(address=store_address, abi=store_abi)
 
-@app.route("/")
-@app.route("/products")                   # at the end point /
+@app.route("/",methods=['GET'])
+@app.route("/products",methods=['GET'])             # at the end point /
 def main():                      
     eventsFilter = storeContract.events.NewProduct.createFilter(fromBlock="0x0")
     events = eventsFilter.get_all_entries()
@@ -24,12 +24,17 @@ def main():
     content = ''
     for event in events:
         prodHash = event['args']['productHash']
-        availableStock = contract.getProductStock(prodHash)
+        try:
+            availableStock = contract.getProductStock(prodHash)
+        except :
+            availableStock = 0
         if availableStock>0:
             prodInfo = Productos.checkHash(prodHash)
             products.append(prodInfo)
     if len(products) == 0:
         content = 'No hay productos disponibles'
+    
+        #return render_template("catalogue/catalogue.html",products=products,content=content,title='Products',account=account)  
     return render_template("catalogue/catalogue.html",products=products,content=content,title='Products')
 
 @app.route("/products/<hashVar>")                   # at the end point /
@@ -48,9 +53,27 @@ def productInfo(hashVar):
 
     return render_template("catalogue/product.html",products=products,title=title)       
 
-@app.route("/login")   
+@app.route("/login",methods = ['POST','GET'])   
 def login():
-    return render_template("login.html")
+    if request.method == 'POST':
+        accountAddress = request.form['account']
+        privKey = request.form['key']
+        privKey = privKey.replace('\\n','\n')
+        msg = b'attack at dawn'
+        binPrivKey = bytes(privKey,'utf8')
+        binPubKey = Productos.getKey(accountAddress)
+        Productos.uploadkey(binPubKey,accountAddress)
+        privKeyImp,pubKeyImp = Login.importKeys(binPrivKey,binPubKey)
+        signature,h = Login.sign(msg,privKeyImp)
+        verification = Login.verify(h,signature, accountAddress)
+        if verification:
+            resp = make_response(redirect(url_for('main')))
+            resp.set_cookie('account',accountAddress)
+            return resp
+        else:
+            return render_template("login.html",palabra='attack at dawn')
+    if request.method == 'GET':
+        return render_template("login.html",palabra='attack at dawn')
 
 @app.route("/register")   
 def register():
@@ -101,7 +124,6 @@ def generateRSA():
             public=keys[1],
             private=keys[0]
         )
-
     
 if __name__ == "__main__":        
     app.run(debug=True)

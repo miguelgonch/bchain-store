@@ -12,7 +12,7 @@ product_abi = abis.abi_product
 
 def newProduct(prodHash,stockQuantity,price,accountId):
     try:
-        storeContract.functions.newProduct(prodHash,stockQuantity,price).transact({'from': w3.eth.accounts[accountId]})
+        storeContract.functions.newProduct(prodHash,stockQuantity,price).transact({'from': w3.eth.accounts[accountId[0]]})
         return True
     except:
         print("Unexpected error:", sys.exc_info()[0])

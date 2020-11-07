@@ -94,11 +94,14 @@ def newProductCon():
     descripcion = request.form['descripcion']
     cantidad = int(request.form['cantidad'])
     if 'account' in request.cookies:
-        account = request.cookies.get['account']
+        account = request.cookies.get('account')
     else:
         account = False
-    Productos.createProduct(producto,precio,descripcion,cantidad,account)
-    return redirect(url_for('main'))
+    result = Productos.createProduct(producto,precio,descripcion,cantidad,account)
+    if result:
+        return redirect(url_for('main'))    
+    else:
+        return redirect(url_for('error'))
 
 @app.route("/delete-prod", methods = ['GET', 'POST'])
 def deleteProductCon():
@@ -117,6 +120,9 @@ def generateRSA():
             public=keys[1],
             private=keys[0]
         )
+@app.route("/error")
+def error():
+    return render_template("error.html",title="Error")
     
 if __name__ == "__main__":        
     app.run(debug=True)

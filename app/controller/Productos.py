@@ -50,15 +50,15 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad,_account):
     if _account:
         accountId = contract.getAccountId(_account)
     else:
-        accountId = 0
+        accountId = False
         print("No account found")
     #store_contract.functions.newProduct(hashh,_cantidad,_precio).transact()
     transactionStatus = contract.newProduct(hashh,_cantidad,_precio,accountId)
     if transactionStatus:
-        pass
+        return hashh
     else:
         print("Error")
-    return hashh
+        return False
 
 def checkHash(_hash):
     query = db.products.find_one({ "hash": _hash })

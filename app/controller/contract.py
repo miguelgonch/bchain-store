@@ -9,6 +9,7 @@ store_address = configFile.store_address
 store_abi = abis.abi_store
 storeContract = w3.eth.contract(address=store_address, abi=store_abi)
 product_abi = abis.abi_product
+request_abi = abis.abi_request
 
 def newProduct(prodHash,stockQuantity,price,accountId):
     try:
@@ -37,5 +38,10 @@ def getProductStock(prodHash):
         if producthash == prodHash:
             productContract = w3.eth.contract(address=productAddress, abi=product_abi)
             actualStock = productContract.functions._stock().call()
-    return actualStock    
+    return actualStock
+
+def createProductRequest(productAddress):
+    productContract = w3.eth.contract(address=productAddress, abi=product_abi)
+    productContract.functions.requestProduct(1).transact({'from': '0x53AF1d437d008801B25CB0d267B107824EB0d4ca','value': 10000})
+    
     

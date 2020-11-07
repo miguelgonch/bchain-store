@@ -40,8 +40,8 @@ def getProductStock(prodHash):
             actualStock = productContract.functions._stock().call()
     return actualStock
 
-def createProductRequest(productAddress):
+def createProductRequest(productAddress, account, costo):
     productContract = w3.eth.contract(address=productAddress, abi=product_abi)
-    productContract.functions.requestProduct(1).transact({'from': '0x53AF1d437d008801B25CB0d267B107824EB0d4ca','value': 10000})
+    productContract.functions.requestProduct(1).transact({'from': account,'value': int(costo)})
     
     

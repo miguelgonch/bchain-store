@@ -108,5 +108,4 @@ def reduceProductQuantity(_hash):
     query = db.products.find_one(myquery)
     nuevaCantidad = int(query['cantidad']) - 1
     updateQuantity = { "$set": { "cantidad": nuevaCantidad } }
-    db.products.update_one(myquery, updateQuantity
-
+    db.products.update_one(myquery, updateQuantity)

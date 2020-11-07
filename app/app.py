@@ -106,7 +106,8 @@ def newProductCon():
 
 @app.route("/buy-product", methods = ['GET', 'POST'])
 def buyProduct():
-    contract.createProductRequest(request.form['productAddress'])
+    account = request.cookies.get('account')
+    contract.createProductRequest(request.form['productAddress'], account, request.form['value'])
     Productos.reduceProductQuantity(request.form['productHash'])
     return redirect(url_for('main'))
 

@@ -22,6 +22,7 @@ def main():
     events = eventsFilter.get_all_entries()
     products = []
     content = ''
+    prodInfo = ''
     for event in events:
         prodHash = event['args']['productHash']
         try:
@@ -31,7 +32,7 @@ def main():
         if availableStock>0:
             prodInfo = Productos.checkHash(prodHash)
             products.append(prodInfo)
-    if len(products) == 0:
+    if (len(products) == 0)|(prodInfo==False):
         content = 'No hay productos disponibles'
     
         #return render_template("catalogue/catalogue.html",products=products,content=content,title='Products',account=account)  

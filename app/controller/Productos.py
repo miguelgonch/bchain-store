@@ -62,8 +62,11 @@ def createProduct(_nombre, _precio, _descripcion, _cantidad,_account):
 
 def checkHash(_hash):
     query = db.products.find_one({ "hash": _hash })
-    if query['hash']==_hash:
-        return query   
+    if query:
+        if query['hash']==_hash:
+            return query  
+    else:
+        return False 
 
 def deleteProduct(_hash):
     global db

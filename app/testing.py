@@ -38,34 +38,11 @@ for event in events:
 
 from config import configFile
 from config import abis
-import sys
+from controller import login
 
-w3 = configFile.w3
-w3.eth.defaultAccount = w3.eth.accounts[0]
-store_address = configFile.store_address
-store_abi = abis.abi_store
-storeContract = w3.eth.contract(address=store_address, abi=store_abi)
-product_abi = abis.abi_product
-prodHash = '503d16a924894a59c7d32a0e3953a293'
-eventsFilter = storeContract.events.NewProduct.createFilter(fromBlock="0x0")
-events = eventsFilter.get_all_entries()
-actualStock = 0
-for event in events:
-    productAddress = event['args']['productAddress']
-    producthash = event['args']['productHash']
-    if producthash == prodHash:
-        productContract = w3.eth.contract(address=productAddress, abi=product_abi)
-        actualStock = productContract.functions._stock().call()
-finalStock = actualStock    
-
-import KeyGenerator
-
-account = '0x9F460a9A5cC606E7cc20f586723E3DD3Ef6ec758'
-keys = KeyGenerator.generateKeys()
-public = keys[0]
-puplicKeyInfo = [public.n,public.e]
-private = keys[1]
-privateKeyInfo = [private]
-
-info = puplicKeyInfo
-#Productos.uploadkey(keys[0],account)
+msg = b'attack at dawn'
+binPrivKey,binPubKey = login.createKeys()
+privKeyImp,pubKeyImp = login.importKeys(binPrivKey,binPubKey)
+signature,h = login.sign(msg,privKeyImp)
+verification = login.verify(h,signature, "0x9F460a9A5cC606E7cc20f586723E3DD3Ef6ec758")
+check = verification

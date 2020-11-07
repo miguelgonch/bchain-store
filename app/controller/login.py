@@ -34,10 +34,10 @@ def decrypt(emsg,privKeyObj):
 
 def sign(msg,privKeyImp):
     # signature
-    msg = b'attack at dawn'
+    #msg = b'attack at dawn'
     h = SHA256.new(msg)
     signature = pss.new(privKeyImp).sign(h)
-    return signature
+    return signature,h
     
 def verify(h,signature, accountAddress):
     # public key query

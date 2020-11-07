@@ -82,7 +82,8 @@ def listProducts():
     return products
 
 def uploadkey(binPubKey, account):
-    data = {'account':account,'pubKey':str(binPubKey)}
+    #data = {'account':account,'pubKey':str(binPubKey)}
+    data = {'account':account,'pubKey':(binPubKey)}
     result = db.keys.insert_one(data)
     if result:
         return True

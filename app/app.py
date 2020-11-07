@@ -1,6 +1,7 @@
 from flask import Flask,render_template, redirect, url_for, request
 from controller import Productos
 from controller import contract
+from controller import login as Login
 from config import configFile
 from config import abis
 import KeyGenerator
@@ -86,12 +87,12 @@ def deleteProductCon():
 def generateRSA():
     if request.method == 'POST':
         account = request.form['account']
-        keys = KeyGenerator.generateKeys()
-        Productos.uploadkey(keys[0],account)
+        keys = Login.createKeys()
+        Productos.uploadkey(keys[1],account)
         return render_template(
             "giveKeys.html",
-            public=keys[0],
-            private=keys[1]
+            public=keys[1],
+            private=keys[0]
         )
 
     
